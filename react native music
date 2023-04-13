@@ -1,0 +1,213 @@
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, TouchableOpacity, Image, Text, FlatList, ImageBackground } from 'react-native';
+import { heightScale, widthScale } from '../../utils/Utils';
+import resources from '../../../res';
+import styles from './styles';
+import { ScrollView } from 'react-native-gesture-handler';
+import PlayListAccountModal from '../../components/Modal/PlayList';
+var Sound = require('react-native-sound');
+Sound.setCategory('Playback');
+
+var audio = new Sound(
+    'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+    null,
+    error => {
+        if (error) {
+            console.log('failed to load the sound', error);
+            return;
+        }
+        else {
+            // audio.play();
+        }
+        // if loaded successfully
+        console.log(
+            'duration in seconds: ' +
+            audio.getDuration() +
+            'number of channels: ' +
+            audio.getNumberOfChannels(),
+        );
+    },
+);
+const FavoritesScreen = (props) => {
+
+    const [playlistModalVisible, setPlaylistModalVisible] = useState(false);
+
+
+    console.log("props", props.route.params);
+    const isFavScreen = props?.route?.params?.fav == 'fav'
+    console.log("favScreen", isFavScreen);
+
+    useEffect(() => {
+        audio.setVolume(1);
+        return () => {
+            audio.release();
+        };
+    }, []);
+
+    let sound;
+
+    const playSound = (item, id, index) => {
+        console.log("the url is " + item.url);
+        if (item.url != 1) {
+            sound = new Sound(item.url, '', (error, _sound) => {
+                if (error) {
+                    alert('error' + error.message);
+                    return;
+
+                }
+                stopSound()
+                sound.play(() => {
+                    sound.release();
+                });
+            });
+        } else {
+
+            sound = new Sound(item.url, (error, _sound) => {
+                if (error) {
+                    alert('error' + error.message);
+                    return;
+                }
+                stopSound()
+
+                sound.play(() => {
+                    sound.release();
+                });
+            });
+        }
+
+    }
+
+    const stopSound = (index) => {
+        sound.stop(() => {
+            console.log('Stop');
+        });
+    }
+
+    const RenderItem = ({ item, index }) => {
+        const [isPlaying, setIsPlaying] = useState(false);
+        return (
+
+            <View style={{ backgroundColor: "rgba(227,227,229,0.5)", marginTop: heightScale(20), marginHorizontal: widthScale(20), borderRadius: 8 }}>
+                <View style={{ flexDirection: 'row' }}>
+                    <ImageBackground
+                        source={item.uri}
+                        style={{ height: heightScale(90), width: widthScale(80), marginLeft: widthScale(10), marginVertical: heightScale(10) }} >
+                        <View style={{ width: widthScale(80), height: heightScale(90), borderWidth: 1, alignItems: 'center', justifyContent: 'center' }}>
+                            {isPlaying ? <TouchableOpacity onPress={() => playSound(item, index)} onPressIn={() => setIsPlaying(!isPlaying)}>
+                                <Image source={resources.images.pauseFav} resizeMode={'contain'} />
+                            </TouchableOpacity> :
+                                <TouchableOpacity onPress={() => stopSound(index)} onPressIn={() => setIsPlaying(!isPlaying)}>
+                                    <Image source={resources.images.play} resizeMode={'contain'} />
+                                </TouchableOpacity>
+                            }
+                        </View>
+                    </ImageBackground>
+
+                    <View style={{ marginTop: heightScale(25), marginLeft: widthScale(14) }}>
+                        <Text style={{ fontFamily: resources.fonts.semi_bold, fontSize: 18 }}>Jason Calacanis</Text>
+                        <Text style={{ fontFamily: resources.fonts.semi_bold, fontSize: 14, lineHeight: 16, marginTop: heightScale(4) }}>Laugh - 90 Min.</Text>
+                        <Text style={{ fontFamily: resources.fonts.semi_bold, fontSize: 10, lineHeight: 12, marginTop: heightScale(4) }}>200 Views</Text>
+                    </View>
+                    <TouchableOpacity style={{ alignSelf: 'center', marginLeft: 'auto', marginRight: widthScale(25) }}
+
+
+                    >
+                        <Image source={resources.images.dots} style={{ height: heightScale(16), width: widthScale(4) }} />
+                    </TouchableOpacity>
+                </View>
+            </View>
+        )
+    }
+    const data = [
+        { url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', name: 'Julie Perry', uri: resources.images.ChallengesImage, },
+        { url: 'http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Sevish_-__nbsp_.mp3', name: 'Julie Perry', uri: resources.images.ChallengesImage, },
+        { url: 'http://commondatastorage.googleapis.com/codeskulptor-assets/Evillaugh.ogg', name: 'Julie Perry', uri: resources.images.MiniclipImage, },
+        { url: 'http://commondatastorage.googleapis.com/codeskulptor-assets/Epoq-Lepidoptera.ogg', name: 'Julie Perry', uri: resources.images.MiniclipImage, },
+        { url: 'http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Sevish_-__nbsp_.mp3', name: 'Julie Perry', uri: resources.images.MiniclipImage, },
+        { url: 'http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3', name: 'Julie Perry', uri: resources.images.MiniclipImage, },
+        { url: 'http://commondatastorage.googleapis.com/codeskulptor-assets/Epoq-Lepidoptera.ogg', name: 'Julie Perry', uri: resources.images.MiniclipImage, },
+        { url: 'http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Sevish_-__nbsp_.mp3', name: 'Julie Perry', uri: resources.images.MiniclipImage, },
+        { url: 'http://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3', name: 'Julie Perry', uri: resources.images.MiniclipImage, },
+
+
+    ]
+
+    return (
+        <View style={styles.container}>
+            <TouchableOpacity style={styles.backtouch}>
+                <TouchableOpacity
+                    onPress={() => props.navigation.goBack()}>
+                    <Image source={resources.images.back_icon} resizeMode={'contain'} style={{ marginLeft: 10, marginRight: 10, height: 44, width: 44 }} />
+                </TouchableOpacity>
+
+                <View style={{ marginTop: heightScale(5) }}>
+                    <Text style={styles.favText}>{isFavScreen ? "Favorites" : "Download"}</Text>
+                </View>
+
+                <TouchableOpacity style={{ marginLeft: 'auto', marginRight: widthScale(10) }}>
+                    <Image source={resources.images.favSearch} style={{ height: heightScale(44), width: widthScale(44) }} />
+                </TouchableOpacity>
+            </TouchableOpacity>
+            <View style={{ marginLeft: widthScale(20) }}>
+                <Text style={styles.favYourText}>{isFavScreen ? "Your Favorites" : "Your Downloads"}</Text>
+            </View>
+
+            <ScrollView style={{}}>
+                <FlatList
+                    data={data}
+                    renderItem={({ item, index }) => {
+                        return <RenderItem item={item} index={index} />
+                    }}
+                    keyExtractor={(item) => item.id}
+                />
+
+            </ScrollView>
+
+
+
+
+
+        </View >
+    );
+};
+
+export default FavoritesScreen;
+
+
+
+import { StyleSheet } from 'react-native';
+import { heightScale, widthScale } from '../../utils/Utils';
+import resources from '../../../res';
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+
+    txt1: {
+        fontSize: 20,
+        marginTop: heightScale(21),
+        fontFamily: resources.fonts.medium,
+        lineHeight: heightScale(24)
+    }
+    ,
+    txt2: {
+        fontSize: 18,
+        marginTop: heightScale(21)
+    },
+    favText:
+        { marginTop: heightScale(7), fontSize: 18, fontFamily: resources.fonts.medium },
+    favYourText:
+        { marginTop: heightScale(7), fontSize: 18, fontFamily: resources.fonts.semi_bold }
+    ,
+    backtouch: {
+        // width: widthScale(44),
+        // height: heightScale(44),
+
+        marginTop: heightScale(40),
+        flexDirection: 'row'
+    },
+
+
+})
+
+export default styles;
