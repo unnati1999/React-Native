@@ -1,0 +1,100 @@
+
+    const customStyles = {
+        stepIndicatorSize: scale(25),
+        currentStepIndicatorSize: scale(25),
+        separatorStrokeWidth: 1,
+        currentStepStrokeWidth: 1,
+        stepStrokeCurrentColor: resources.colors.teal,
+        stepStrokeWidth: 2,
+        stepStrokeFinishedColor: resources.colors.teal,
+        stepStrokeUnFinishedColor: resources.colors.teal,
+        separatorFinishedColor: resources.colors.teal,
+        separatorUnFinishedColor: resources.colors.teal,
+        stepIndicatorFinishedColor: resources.colors.teal,
+        stepIndicatorUnFinishedColor: resources.colors.teal,
+        stepIndicatorCurrentColor: resources.colors.teal,
+        stepIndicatorLabelFontSize: 13,
+        currentStepIndicatorLabelFontSize: 13,
+        stepIndicatorLabelCurrentColor: resources.colors.teal,
+        stepIndicatorLabelFinishedColor: '#ffffff',
+        stepIndicatorLabelUnFinishedColor: resources.colors.teal,
+        labelColor: resources.colors.teal,
+        currentStepLabelColor: resources.colors.teal,
+    };
+      const data = [
+        {
+            label: 'Lorem Ipsum MeetingLorem Ipsum MeetingLorem Ipsum MeetingLorem Ipsum Meeting ',
+            status: 'zoom.meetingscom/lovely_54673014',
+            startTime: '12-02-2019',
+            endTime: '21 July 2022',
+        },
+        {
+            label: 'Lorem Ipsum Meeting',
+            status: 'zoom.meetingscom/lovely_54673014',
+            startTime: '18-july-1999',
+            endTime: '18 July 1999',
+        },
+        {
+            label: 'Lorem Ipsum Meeting',
+            status: 'zoom.meetingscom/lovely_54673014',
+            startTime: '12-02-2019',
+            endTime: '299 July 2022',
+        },
+        {
+            label: 'Lorem Ipsum Meeting',
+            status: 'zoom.meetingscom/lovely_54673014',
+            startTime: '12-02-2019',
+            endTime: '21 July 2022',
+        },
+        {
+            label: 'Lorem Ipsum Meeting',
+            status: 'zoom.meetingscom/lovely_54673014',
+            startTime: '12-02-2019',
+            endTime: '21 July 2022',
+        },
+        {
+            label: 'Lorem Ipsum Meeting',
+            status: 'zoom.meetingscom/lovely_54673014',
+            startTime: '12-02-2019',
+            endTime: '21 July 2022',
+        },
+    ];
+  <StepIndicator
+                    customStyles={customStyles}
+                    currentPosition={currentPosition}
+                    labels={data}
+                    stepCount={data.length}
+                    direction="vertical"
+                    renderLabel={({ stepStatus, label, currentPosition, position }) => {
+                        return (
+                            <View style={styles.mainView}>
+                                <View style={styles.subMainView}>
+                                    <Text style={styles.name}>{data[position].label}</Text>
+                                    <Text style={styles.namesecond}>{data[position].status}</Text>
+
+                                    <View
+                                        style={styles.imageView}>
+                                        <Image
+                                            source={resources.images.calendar}
+                                            style={styles.imageStyle}
+                                        />
+                                        <Text style={styles.des}>{data[position].startTime} </Text>
+                                        <Text style={styles.des}>|</Text>
+                                        <Image
+                                            source={resources.images.timer}
+                                            style={styles.timeImageView}
+                                        />
+                                        <Text style={styles.des}>{data[position].endTime} </Text>
+                                    </View>
+                                </View>
+                                <TouchableOpacity
+                                    style={styles.buttonView}>
+                                    <Text
+                                        style={styles.joinTextStyle}>
+                                        Join
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                        );
+                    }}
+                />
