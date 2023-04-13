@@ -1,0 +1,77 @@
+   
+     const [dob, setDob] = useState('');
+    const [year, setYear] = useState('');
+    const onDateChange = (date, type) => {
+        setDob(date);
+    };
+    const onYearChange = (year, type) => {
+        setYear(year);
+    };
+   
+   <View
+                    style={styles.calendarMainView}>
+                    <CalendarPicker
+                        previousComponent={
+                            <Image
+                                source={resources.images.previousIcon}
+                                width={30}
+                                height={30}
+                                style={{ marginHorizontal: widthScale(20) }}
+                                color={resources.colors.SecondaryTeal}
+                            />
+                        }
+                        nextComponent={
+                            <Image
+                                source={resources.images.forwardIcon}
+                                width={30}
+                                height={30}
+                                style={{ marginHorizontal: widthScale(20) }}
+                                color={resources.colors.DarkBlack}
+                            />
+                        }
+                        textStyle={{ fontSize: 14, fontFamily: resources.fonts.light }}
+                        scaleFactor={375}
+                        year={2023}
+                        yearTitleStyle={{
+
+                            marginLeft: widthScale(52),
+                            fontFamily: resources.fonts.semi_bold,
+                            fontSize: 20,
+                            color: resources.colors.inputColor,
+                        }}
+                        handleOnPressYear={onYearChange}
+                        onSelectYear={onYearChange}
+                        monthTitleStyle={{
+                            fontFamily: resources.fonts.semi_bold,
+                            fontSize: 20,
+                            color: resources.colors.inputColor,
+                        }}
+                        selectedDayStyle={{ borderWidth: 1, borderColor: '#FF7A01' }}
+                        onDateChange={onDateChange}
+                    />
+                    {/* <Text
+                        style={{
+                            alignContent: 'center',
+                            justifyContent: 'center',
+                            alignSelf: 'center',
+                            marginHorizontal: 30,
+                            fontFamily: resources.fonts.semi_bold,
+                            fontSize: 20,
+                            marginTop: heightScale(11),
+                            color: resources.colors.dark,
+                        }}>
+                        {moment(dob).format('MMMM DD, YYYY')}
+                    </Text> */}
+                    
+                    
+                    
+                       calendarMainView: {
+        backgroundColor: 'white',
+        borderRadius: 14,
+        marginTop: heightScale(20),
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
+        elevation: 3,
+        shadowColor: '#52006A',
+    },
+                </View>
